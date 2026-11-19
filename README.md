@@ -10,6 +10,20 @@ This fork is based on [pulse00/smartypdt](https://github.com/pulse00/smartypdt) 
 - Fixed `ActionContributorForPhp` -> `ActionContributorForPHP` (the class was renamed in PDT)
 - New `org.eclipse.php.smarty.repository` module that produces an installable p2 repository
 
+## Versioning
+
+The plug-in version follows the PDT version it is built against, followed by our own release number in the OSGi qualifier:
+
+```
+8.4.0.v0_12_0
+|-----| |-----|
+  PDT    ours
+```
+
+- `8.4.0` is the PDT version from the target platform (`https://download.eclipse.org/releases/2026-03` ships PDT `8.4.0`). It is the base version of the two bundles, of the feature and the parent poms.
+- `v0_12_0` is our release, derived by CI from the git tag (`v0.12.0`). OSGi qualifiers may only contain `[0-9a-zA-Z_-]`, so the dots of the tag become underscores. As a consequence `v0.13.0` produces the full version `8.4.0.v0_13_0`.
+- Releasing a new SmartyPDT version therefore needs no source change at all: tag and push. Only when Eclipse moves to a new PDT do you run `./set-pdt-version.sh 8.5.0` once and update the target platform URL in `pom.xml`.
+
 ## Requirements
 
 - JDK 21+ (e.g. `brew install openjdk@21`)
@@ -22,9 +36,9 @@ This fork is based on [pulse00/smartypdt](https://github.com/pulse00/smartypdt) 
 ./build.sh
 ```
 
-The script runs `mvn clean verify` with a timestamped build qualifier and produces `dist/smartypdt-update-site-0.12.0-<qualifier>.zip`, a p2 update-site archive.
+The script runs `mvn clean verify` with a timestamped build qualifier and produces `dist/smartypdt-update-site-8.4.0-<qualifier>.zip`, a p2 update-site archive.
 
-To pick a specific qualifier, set the `QUALIFIER` environment variable (it is sanitized to the OSGi allowed character set `[0-9a-zA-Z_-]`, so `v0.12.0` becomes `v0_12_0`):
+To pick a specific qualifier, set the `QUALIFIER` environment variable (it is sanitized to the OSGi allowed character set `[0-9a-zA-Z_-]`, so the tag `v0.12.0` becomes `v0_12_0`):
 
 ```bash
 QUALIFIER=build42 ./build.sh
@@ -50,6 +64,8 @@ After the restart, Smarty support can be enabled per project with right click > 
 - The original project relies on internal PDT and WST APIs. Most of them are still available in PDT 8.4, but they are not guaranteed to be stable and may change in future releases.
 - The bundles are not signed: Eclipse will ask for confirmation about an untrusted publisher.
 - The `org.eclipse.php.smarty.test` fragment is not part of the build (it depends on `org.eclipse.php.core.tests`, which is not shipped in the release repository).
+- `{literal} ... {/literal}` blocks are supported: Smarty code inside them is not parsed, so CSS/JS braces and `{$placeholder}` fragments stay plain HTML content and are highlighted like the rest of the template.
+- `SmartyTokenizer.java` is maintained by hand; the JFlex specification in `devTools/` documents the original grammar but is not used to regenerate that file.
 
 ## Installing from the online update site
 

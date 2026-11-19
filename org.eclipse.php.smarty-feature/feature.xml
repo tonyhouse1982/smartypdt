@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.php.smarty_feature"
       label="Smarty Feature"
-      version="0.12.0.qualifier">
+      version="8.4.0.qualifier">
 
    <description url="http://code.google.com/p/smartypdt/">
       The PDT project provides a PHP Development Tools framework for the Eclipse platform. 
@@ -54,7 +54,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       <import plugin="org.eclipse.php.debug.core"/>
       <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.dltk.core" match="greaterOrEqual"/>
-      <import feature="org.eclipse.php" version="5.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.php" version="8.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.php.ui"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.ui.editors"/>

@@ -555,6 +555,13 @@ public class SmartyTokenizer implements BlockTokenizer, PHPRegionContext, DOMReg
 	private String internalTagName = null;
 	private String internalContext = null;
 	
+	// true while the tokenizer is inside a {literal} ... {/literal} block
+	private boolean fInsideLiteralBlock = false;
+	// true when the last scanned smarty token was the "literal" label
+	private boolean fPendingLiteralLabel = false;
+	// true when the last scanned smarty delimiter inside a tag was "/"
+	private boolean fPendingLiteralSlash = false;
+
 	// The left and right delimiters
 	public static String smartyLeftDelim = "{";
 	public static String smartyRightDelim = "}";
@@ -1257,6 +1264,11 @@ public void reset(java.io.Reader in, int newOffset) {
 	}
 	fOffset = newOffset;
 
+	// a new tokenizer run always starts outside of a literal block
+	fInsideLiteralBlock = false;
+	fPendingLiteralLabel = false;
+	fPendingLiteralSlash = false;
+
 	/* the input device */
 	yy_reader = in;
 
@@ -1614,6 +1626,19 @@ protected final boolean containsTagName(String markerTagName) {
 }
 /* user method - skeleton.sse */
 protected final String findSmartyDelimiter(String text, String insideOf, String delim, String delimType, int afterDelimType){
+	if (fInsideLiteralBlock) {
+		// Inside {literal} ... {/literal} everything is literal text: only the
+		// closing tag is still handed to the smarty grammar, so that the block
+		// gets closed. Braces of embedded HTML/JavaScript/CSS stay XML content.
+		final int closingTag = text.indexOf("{/literal");
+		if (closingTag < 0) {
+			return insideOf;
+		}
+		if (closingTag > 0) {
+			yypushback(yylength() - closingTag);
+			return insideOf;
+		}
+	}
 	final int startChar = text.indexOf(delim);
 	//System.err.println("Delim: "+delim+" looking in: '"+text+"' startchar: "+startChar);
 	if (startChar != -1) {
@@ -1626,6 +1651,9 @@ protected final String findSmartyDelimiter(String text, String insideOf, String 
 			//return YYINITIAL;
 		} else {
 			//System.err.println("c");
+			// a new smarty tag starts here, so forget the previous tag state
+			fPendingLiteralLabel = false;
+			fPendingLiteralSlash = false;
 			yybegin(afterDelimType);
 			// pushback to just after the closing bracket
 			int delemLen = delim.length();
@@ -2035,6 +2063,12 @@ protected final String findSmartyDelimiter(String text, String insideOf, String 
 	//TODO: Figure out how to change the end delimiter, so that 
 	//this.rightSmartyDelimiter is used (so it can be changed in config)
 	yybegin(YYINITIAL);
+	if (fPendingLiteralLabel) {
+		// {literal} opens the block, {/literal} closes it
+		fInsideLiteralBlock = !fPendingLiteralSlash;
+	}
+	fPendingLiteralLabel = false;
+	fPendingLiteralSlash = false;
 	return SMARTY_CLOSE;
  }
         case 312: break;
@@ -2432,6 +2466,7 @@ protected final String findSmartyDelimiter(String text, String insideOf, String 
         case 109: 
         case 111: 
           { 
+	fPendingLiteralSlash = "/".equals(yytext());
 	return SMARTY_DELIMITER;
  }
         case 346: break;
@@ -2442,6 +2477,9 @@ protected final String findSmartyDelimiter(String text, String insideOf, String 
         case 347: break;
         case 105: 
           { 
+	// remember whether this label opens/closes a literal block; the "/" of
+	// the closing tag is reported separately as SMARTY_DELIMITER
+	fPendingLiteralLabel = "literal".equals(yytext());
 	return SMARTY_LABEL;
  }
         case 348: break;

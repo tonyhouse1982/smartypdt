@@ -19,7 +19,9 @@ echo "==> Build qualifier: ${QUALIFIER}"
 mvn -B clean verify -DforceContextQualifier="${QUALIFIER}" -Dtycho.localArtifacts=ignore
 
 REPO_DIR="org.eclipse.php.smarty.repository/target/repository"
-OUT="dist/smartypdt-update-site-0.12.0-${QUALIFIER}.zip"
+# Base version follows the PDT version (see set-pdt-version.sh)
+BASE_VERSION="$(sed -n 's/^Bundle-Version: \([0-9.]*\)\.qualifier$/\1/p' org.eclipse.php.smarty.core/META-INF/MANIFEST.MF | head -1)"
+OUT="dist/smartypdt-update-site-${BASE_VERSION}-${QUALIFIER}.zip"
 mkdir -p dist
 rm -f dist/smartypdt-update-site-*.zip
 ( cd "${REPO_DIR}" && zip -q -r -X "../../../${OUT}" . )
