@@ -69,11 +69,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -104,26 +99,3 @@ jobs:
           git -C site add -A
           git -C site commit -m "Publish ${GITHUB_REF_NAME}" || echo "nothing to commit"
           git -C site push origin update-site
-
-      - name: Prepare pages content
-        run: |
-          mkdir -p public
-          tar -C site --exclude=.git -cf - . | tar -C public -xf -
-
-      - name: Setup Pages
-        id: pages
-        continue-on-error: true
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-
-      - name: Upload pages artifact
-        if: steps.pages.outcome == 'success'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: public
-
-      - name: Deploy to GitHub Pages
-        id: deploy
-        if: steps.pages.outcome == 'success'
-        uses: actions/deploy-pages@v4

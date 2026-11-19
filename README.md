@@ -77,7 +77,7 @@ https://raw.githubusercontent.com/tonyhouse1982/smartypdt/update-site/
 
 In Eclipse: `Help` > `Install New Software...` > `Add...` and paste that URL. The same URL can later be used with `Help` > `Check for Updates`, because older releases stay in the composite repository next to the new ones.
 
-The `publish` job in GitHub Actions rebuilds that branch on every `v*` tag. It also tries to mirror the same content to GitHub Pages; that part only works once Pages has been enabled in the repository settings (`Settings` > `Pages` > `Source: GitHub Actions`), and it is skipped otherwise.
+The `publish` job in GitHub Actions rebuilds that branch on every `v*` tag, adding the new version next to the ones that are already published. No GitHub Pages configuration is needed: raw file access to the branch is enough for p2.
 
 ## Releases and continuous integration
 
