@@ -66,6 +66,7 @@ After the restart, Smarty support can be enabled per project with right click > 
 - The `org.eclipse.php.smarty.test` fragment is not part of the build (it depends on `org.eclipse.php.core.tests`, which is not shipped in the release repository).
 - `{literal} ... {/literal}` blocks are supported: Smarty code inside them is not parsed, so CSS/JS braces and `{$placeholder}` fragments stay plain HTML content and are highlighted like the rest of the template.
 - `SmartyTokenizer.java` is maintained by hand; the JFlex specification in `devTools/` documents the original grammar but is not used to regenerate that file.
+- `<script>` bodies are coloured by a small built in JavaScript scanner (comments, strings, numbers, keywords) and Smarty `{$variable}` references are highlighted there too, except inside `{literal}` blocks. If the JavaScript Development Tools (JSDT) are installed they are used instead.
 
 ## Installing from the online update site
 

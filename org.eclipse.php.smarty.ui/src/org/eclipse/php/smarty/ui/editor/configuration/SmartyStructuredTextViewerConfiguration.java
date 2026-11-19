@@ -38,6 +38,7 @@ import org.eclipse.php.internal.ui.editor.contentassist.PHPCompletionProcessor;
 import org.eclipse.php.internal.ui.text.hover.PHPEditorTextHoverDescriptor;
 import org.eclipse.php.internal.ui.util.ElementCreationProxy;
 import org.eclipse.php.smarty.internal.core.documentModel.parser.partitioner.SmartyPartitionTypes;
+import org.eclipse.php.smarty.ui.editor.LineStyleProviderForJavaScript;
 import org.eclipse.php.smarty.ui.editor.LineStyleProviderForSmarty;
 import org.eclipse.php.ui.format.PHPFormatProcessorProxy;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -49,6 +50,7 @@ import org.eclipse.wst.sse.ui.internal.provisional.style.LineStyleProvider;
 public class SmartyStructuredTextViewerConfiguration extends PHPStructuredTextViewerConfiguration {
 
 	private LineStyleProvider fLineStyleProvider;
+	private LineStyleProvider fJavaScriptLineStyleProvider;
 	private IPropertyChangeListener propertyChangeListener;
 
 	public SmartyStructuredTextViewerConfiguration() {
@@ -83,7 +85,24 @@ public class SmartyStructuredTextViewerConfiguration extends PHPStructuredTextVi
 		if (SmartyPartitionTypes.isSmartyPartition(partitionType)) {
 			return new LineStyleProvider[] { getLineStyleProvider() };
 		}
+		if (IHTMLPartitions.SCRIPT == partitionType) {
+			// The body of a <script> element is tokenized as a single block of
+			// text, so we provide our own small JavaScript highlighter unless a
+			// real one is registered for this partition.
+			LineStyleProvider[] registered = super.getLineStyleProviders(sourceViewer, partitionType);
+			if (registered != null && registered.length > 0) {
+				return registered;
+			}
+			return new LineStyleProvider[] { getJavaScriptLineStyleProvider() };
+		}
 		return super.getLineStyleProviders(sourceViewer, partitionType);
+	}
+
+	private LineStyleProvider getJavaScriptLineStyleProvider() {
+		if (fJavaScriptLineStyleProvider == null) {
+			fJavaScriptLineStyleProvider = new LineStyleProviderForJavaScript();
+		}
+		return fJavaScriptLineStyleProvider;
 	}
 
 	@Override
