@@ -18,6 +18,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.php.smarty.core,
  org.eclipse.php.smarty.internal.core.documentModel.parser,
- org.eclipse.php.smarty.internal.core.documentModel.parser.partitioner,
- org.eclipse.php.smarty.internal.core.documentModel.parser.test
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ org.eclipse.php.smarty.internal.core.documentModel.parser.partitioner
+Bundle-RequiredExecutionEnvironment: JavaSE-21

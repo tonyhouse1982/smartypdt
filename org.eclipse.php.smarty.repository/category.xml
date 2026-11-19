@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.eclipse.php.smarty_feature" version="0.0.0">
+      <category name="smartypdt"/>
+   </feature>
+   <category-def name="smartypdt" label="SmartyPDT (Smarty support for PDT)">
+      <description>Smarty template support for the Eclipse PHP Development Tools.</description>
+   </category-def>
+</site>

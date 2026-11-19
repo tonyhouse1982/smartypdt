@@ -27,4 +27,4 @@ Export-Package:
  org.eclipse.php.smarty.ui.editor
 Import-Package: org.eclipse.ui.texteditor.templates
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-21

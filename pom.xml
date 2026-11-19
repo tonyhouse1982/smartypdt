@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.php.smarty</groupId>
   <artifactId>parent</artifactId>
   <version>0.11.0-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <name>SmartyPDT</name>
+
   <modules>
     <module>org.eclipse.php.smarty.core</module>
     <module>org.eclipse.php.smarty.ui</module>
     <module>org.eclipse.php.smarty-feature</module>
+    <module>org.eclipse.php.smarty.repository</module>
   </modules>
 
   <properties>
-    <tycho-version>1.2.0</tycho-version>
+    <tycho-version>5.0.4</tycho-version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <repositories>
-   <repository>
-     <id>neon</id>
-     <layout>p2</layout>
-     <url>http://download.eclipse.org/releases/photon</url>
-   </repository>	
- </repositories>
- <pluginRepositories>
-		<pluginRepository>
-			<id>maven.eclipse.org</id>
-			<url>https://repo.eclipse.org/content/repositories/releases/</url>
-    </pluginRepository>
- </pluginRepositories>
+    <repository>
+      <id>eclipse-2026-03</id>
+      <layout>p2</layout>
+      <url>https://download.eclipse.org/releases/2026-03</url>
+    </repository>
+  </repositories>
 
   <build>
     <plugins>
@@ -38,15 +36,27 @@
         <extensions>true</extensions>
       </plugin>
       <plugin>
-	    <groupId>org.eclipse.tycho</groupId>
-	    <artifactId>tycho-compiler-plugin</artifactId>
-	    <version>${tycho-version}</version>
-	    <configuration>
-		  <source>1.8</source>
-		  <target>1.8</target>
-	    </configuration>
-      </plugin>	  
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <environments>
+            <environment><os>macosx</os><ws>cocoa</ws><arch>aarch64</arch></environment>
+            <environment><os>macosx</os><ws>cocoa</ws><arch>x86_64</arch></environment>
+            <environment><os>linux</os><ws>gtk</ws><arch>x86_64</arch></environment>
+            <environment><os>win32</os><ws>win32</ws><arch>x86_64</arch></environment>
+          </environments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <source>21</source>
+          <target>21</target>
+        </configuration>
+      </plugin>
     </plugins>
-  </build>  
-  
+  </build>
 </project>
