@@ -24,10 +24,10 @@ This fork is based on [pulse00/smartypdt](https://github.com/pulse00/smartypdt) 
 
 The script runs `mvn clean verify` with a timestamped build qualifier and produces `dist/smartypdt-update-site-0.11.0-<qualifier>.zip`, a p2 update-site archive.
 
-To pick a specific qualifier, set the `QUALIFIER` environment variable:
+To pick a specific qualifier, set the `QUALIFIER` environment variable (it is sanitized to the OSGi allowed character set `[0-9a-zA-Z_-]`, so `v0.11.0` becomes `v0_11_0`):
 
 ```bash
-QUALIFIER=v0.11.0 ./build.sh
+QUALIFIER=build42 ./build.sh
 ```
 
 ## Installation in Eclipse 2026-03

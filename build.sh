@@ -10,6 +10,8 @@ fi
 export PATH="$JAVA_HOME/bin:/opt/homebrew/bin:$PATH"
 
 QUALIFIER="${QUALIFIER:-$(date +%Y%m%d%H%M)}"
+# OSGi build qualifiers may only contain [0-9a-zA-Z_-]
+QUALIFIER="$(printf '%s' "${QUALIFIER}" | sed 's/[^a-zA-Z0-9_-]/_/g')"
 
 echo "==> Java: $(java -version 2>&1 | head -1)"
 echo "==> Build qualifier: ${QUALIFIER}"
