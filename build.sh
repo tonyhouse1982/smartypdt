@@ -19,7 +19,7 @@ echo "==> Build qualifier: ${QUALIFIER}"
 mvn -B clean verify -DforceContextQualifier="${QUALIFIER}" -Dtycho.localArtifacts=ignore
 
 REPO_DIR="org.eclipse.php.smarty.repository/target/repository"
-OUT="dist/smartypdt-update-site-0.11.0-${QUALIFIER}.zip"
+OUT="dist/smartypdt-update-site-0.12.0-${QUALIFIER}.zip"
 mkdir -p dist
 rm -f dist/smartypdt-update-site-*.zip
 ( cd "${REPO_DIR}" && zip -q -r -X "../../../${OUT}" . )

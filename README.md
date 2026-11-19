@@ -22,9 +22,9 @@ This fork is based on [pulse00/smartypdt](https://github.com/pulse00/smartypdt) 
 ./build.sh
 ```
 
-The script runs `mvn clean verify` with a timestamped build qualifier and produces `dist/smartypdt-update-site-0.11.0-<qualifier>.zip`, a p2 update-site archive.
+The script runs `mvn clean verify` with a timestamped build qualifier and produces `dist/smartypdt-update-site-0.12.0-<qualifier>.zip`, a p2 update-site archive.
 
-To pick a specific qualifier, set the `QUALIFIER` environment variable (it is sanitized to the OSGi allowed character set `[0-9a-zA-Z_-]`, so `v0.11.0` becomes `v0_11_0`):
+To pick a specific qualifier, set the `QUALIFIER` environment variable (it is sanitized to the OSGi allowed character set `[0-9a-zA-Z_-]`, so `v0.12.0` becomes `v0_12_0`):
 
 ```bash
 QUALIFIER=build42 ./build.sh
@@ -51,15 +51,25 @@ After the restart, Smarty support can be enabled per project with right click > 
 - The bundles are not signed: Eclipse will ask for confirmation about an untrusted publisher.
 - The `org.eclipse.php.smarty.test` fragment is not part of the build (it depends on `org.eclipse.php.core.tests`, which is not shipped in the release repository).
 
+## Installing from the online update site
+
+The published releases are also served as a static p2 composite repository on GitHub Pages:
+
+```
+https://tonyhouse1982.github.io/smartypdt/
+```
+
+In Eclipse: `Help` > `Install New Software...` > `Add...` > paste that URL. All published versions are kept in the same repository, so the same URL can be used later for `Help` > `Check for Updates`: Eclipse always sees the newest release together with the previous ones.
+
 ## Releases and continuous integration
 
 Every push to `master` builds the update site on GitHub Actions and stores it as a workflow artifact (`smartypdt-update-site`). The same `./build.sh` can always be run locally.
 
-Pushing a tag named `v*` (for example `v0.11.0`) builds the update site and publishes a GitHub release with the p2 zip attached, so the packaged plug-in can be downloaded without compiling anything:
+Pushing a tag named `v*` (for example `v0.12.0`) builds the update site and publishes a GitHub release with the p2 zip attached, so the packaged plug-in can be downloaded without compiling anything:
 
 ```bash
-git tag v0.11.0
-git push origin v0.11.0
+git tag v0.12.0
+git push origin v0.12.0
 ```
 
 Download the zip from the repository `Releases` page and follow the installation steps above.
