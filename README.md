@@ -50,3 +50,16 @@ After the restart, Smarty support can be enabled per project with right click > 
 - The original project relies on internal PDT and WST APIs. Most of them are still available in PDT 8.4, but they are not guaranteed to be stable and may change in future releases.
 - The bundles are not signed: Eclipse will ask for confirmation about an untrusted publisher.
 - The `org.eclipse.php.smarty.test` fragment is not part of the build (it depends on `org.eclipse.php.core.tests`, which is not shipped in the release repository).
+
+## Releases and continuous integration
+
+Every push to `master` builds the update site on GitHub Actions and stores it as a workflow artifact (`smartypdt-update-site`). Building is not triggered for pull requests from forks without approval, but the same `./build.sh` can always be run locally.
+
+Pushing a tag named `v*` (for example `v0.11.0`) builds the update site and publishes a GitHub release with the p2 zip attached, so the packaged plug-in can be downloaded without compiling anything:
+
+```bash
+git tag v0.11.0
+git push origin v0.11.0
+```
+
+Download the zip from the repository `Releases` page and follow the installation steps above.

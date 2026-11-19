@@ -1,0 +1,61 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build update site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Cache Tycho target platform
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/.cache/tycho
+          key: tycho-${{ hashFiles('pom.xml', '*/META-INF/MANIFEST.MF') }}
+          restore-keys: |
+            tycho-
+
+      - name: Build
+        id: build
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            export QUALIFIER="${GITHUB_REF_NAME//\//-}"
+          fi
+          chmod +x ./build.sh
+          ./build.sh
+          ZIP="$(ls dist/smartypdt-update-site-*.zip | head -1)"
+          echo "zip=${ZIP}" >> "$GITHUB_OUTPUT"
+          echo "Built: ${ZIP}"
+
+      - name: Upload update site
+        uses: actions/upload-artifact@v4
+        with:
+          name: smartypdt-update-site
+          path: dist/*.zip
+          if-no-files-found: error
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" "${{ steps.build.outputs.zip }}" --title "${GITHUB_REF_NAME}" --generate-notes
