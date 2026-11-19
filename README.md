@@ -53,7 +53,7 @@ After the restart, Smarty support can be enabled per project with right click > 
 
 ## Releases and continuous integration
 
-Every push to `master` builds the update site on GitHub Actions and stores it as a workflow artifact (`smartypdt-update-site`). Building is not triggered for pull requests from forks without approval, but the same `./build.sh` can always be run locally.
+Every push to `master` builds the update site on GitHub Actions and stores it as a workflow artifact (`smartypdt-update-site`). The same `./build.sh` can always be run locally.
 
 Pushing a tag named `v*` (for example `v0.11.0`) builds the update site and publishes a GitHub release with the p2 zip attached, so the packaged plug-in can be downloaded without compiling anything:
 

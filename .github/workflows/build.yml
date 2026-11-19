@@ -51,15 +51,6 @@ jobs:
           echo "zip=${ZIP}" >> "$GITHUB_OUTPUT"
           echo "Built: ${ZIP}"
 
-      - name: Upload build log on failure
-        if: failure()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if [ ! -f build.log ]; then echo "no build.log" > build.log; fi
-          gh release view ci-logs >/dev/null 2>&1 || gh release create ci-logs --title "CI build logs" --notes "Automated build diagnostics. Not an installable artifact." --prerelease
-          gh release upload ci-logs build.log --clobber
-
       - name: Upload update site
         uses: actions/upload-artifact@v4
         with:
