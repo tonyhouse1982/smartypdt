@@ -111,15 +111,19 @@ jobs:
           tar -C site --exclude=.git -cf - . | tar -C public -xf -
 
       - name: Setup Pages
+        id: pages
+        continue-on-error: true
         uses: actions/configure-pages@v5
         with:
           enablement: true
 
       - name: Upload pages artifact
+        if: steps.pages.outcome == 'success'
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
 
       - name: Deploy to GitHub Pages
         id: deploy
+        if: steps.pages.outcome == 'success'
         uses: actions/deploy-pages@v4

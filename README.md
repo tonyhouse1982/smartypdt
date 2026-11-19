@@ -53,13 +53,15 @@ After the restart, Smarty support can be enabled per project with right click > 
 
 ## Installing from the online update site
 
-The published releases are also served as a static p2 composite repository on GitHub Pages:
+Every published release is served from the `update-site` branch as a static composite p2 repository, so one URL always contains all published versions:
 
 ```
-https://tonyhouse1982.github.io/smartypdt/
+https://raw.githubusercontent.com/tonyhouse1982/smartypdt/update-site/
 ```
 
-In Eclipse: `Help` > `Install New Software...` > `Add...` > paste that URL. All published versions are kept in the same repository, so the same URL can be used later for `Help` > `Check for Updates`: Eclipse always sees the newest release together with the previous ones.
+In Eclipse: `Help` > `Install New Software...` > `Add...` and paste that URL. The same URL can later be used with `Help` > `Check for Updates`, because older releases stay in the composite repository next to the new ones.
+
+The `publish` job in GitHub Actions rebuilds that branch on every `v*` tag. It also tries to mirror the same content to GitHub Pages; that part only works once Pages has been enabled in the repository settings (`Settings` > `Pages` > `Source: GitHub Actions`), and it is skipped otherwise.
 
 ## Releases and continuous integration
 
