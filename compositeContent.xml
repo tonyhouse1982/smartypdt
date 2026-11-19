@@ -1,9 +1,10 @@
 <?compositeMetadataRepository version='1.0.0'?>
 <repository name='SmartyPDT Update Site' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
   <properties size='1'>
-    <property name='p2.timestamp' value='1795101574000'/>
+    <property name='p2.timestamp' value='1795101736000'/>
   </properties>
-  <children size='1'>
+  <children size='2'>
     <child location='v0.11.0'/>
+    <child location='v0.12.0'/>
   </children>
 </repository>
